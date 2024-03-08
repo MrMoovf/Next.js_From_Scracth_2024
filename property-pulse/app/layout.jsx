@@ -12,7 +12,7 @@ const MainLayout = ({children}) => {
         <html lang='en'>
             <body>
                 
-                <div>
+                <div>  
                     {children}
                 </div>
             </body>
