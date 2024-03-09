@@ -1,10 +1,13 @@
+import Hero from "@/components/Hero"
+import Link from "next/link"
+
+
 const HomePage = () => {
-  return (
-    <div>
-        Home page
-      
-    </div>
-  )
+    return (
+      <>
+        <Hero/>
+      </>
+    )
 }
 
 export default HomePage
