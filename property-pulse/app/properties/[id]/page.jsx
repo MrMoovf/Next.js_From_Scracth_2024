@@ -6,7 +6,7 @@ const ShowProperty = ({params: {id}}) => {
         
     return (
         <div>
-            <h1 className='text-3xl'>Property Page</h1>        
+            <h1 className='text-3xl'>Property {id} Page</h1>        
         </div>
     )
 }

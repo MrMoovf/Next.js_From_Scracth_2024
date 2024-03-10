@@ -1,16 +1,21 @@
 import Footer from "@/components/Footer"
 import Hero from "@/components/Hero"
+import HomeProperties from "@/components/HomeProperties"
 import InfoBoxes from "@/components/InfoBoxes"
-import Link from "next/link"
+
+const fetchData = async ()=>{
+	
+}
 
 
-const HomePage = () => {
-    return (
-      <>
-        <Hero/>
-        <InfoBoxes/>
-        <Footer/>
-      </>
+const HomePage = async () => {
+	return (
+		<>
+			<Hero/>
+			<InfoBoxes/>
+			<HomeProperties/>
+			<Footer/>
+		</>
     )
 }
 
