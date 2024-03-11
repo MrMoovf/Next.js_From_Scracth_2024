@@ -1,27 +1,15 @@
-import Link from 'next/link'
 import React from 'react'
-// import properties from '@/data/properties';
 import PropertyCard from '@/components/PropertyCard';
+import { fetchProperties } from '@/utils/requests';
 
-const fetchProperties = async () => {
-	try {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/properties`)
-		if(!res.ok){
-			throw new Error('Failed to fetch data');
-		}
-		let data = await res.json();
-		data = data.properties;
-
-		return data;
-	} catch (error) {
-		
-	}
-}
 
 const PropertiesPage = async () => {
 
 	const properties = await fetchProperties();
 	console.log(properties);
+
+	// Sorting the properties on date
+	properties.sort( (a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
 	return (
 		<div>

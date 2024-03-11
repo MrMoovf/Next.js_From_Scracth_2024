@@ -9,7 +9,7 @@ export const GET = async (request) =>{
 
         const properties = await Property.find({});
 
-        return new Response(JSON.stringify({properties: properties}),{status:200})
+        return new Response(JSON.stringify({properties}),{status:200})
     } catch (error) {
         return new Response('Error',{status:500})
         
