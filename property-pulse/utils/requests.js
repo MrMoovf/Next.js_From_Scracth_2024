@@ -33,8 +33,6 @@ const fetchProperty = async (id) => {
 
         let data = await res.json();
 
-        // console.log(`data is: ${data}`);
-        
         return data;
     } catch (error) {
         return null
