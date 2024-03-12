@@ -39,13 +39,13 @@ const ShowProperty = ({params: {id}}) => {
         return (
         <div>
             <h1 className="text-2xl">Property Not Found</h1>
-            <Spinner/>
         </div>
         )
     }
 
     return (
         <>
+            {loading && (<Spinner loading={loading} />)}
             {!loading && property && (
                 <>
                     <PropertyHeaderImage image={property.images[0]} />

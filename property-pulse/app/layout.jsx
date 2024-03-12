@@ -1,6 +1,7 @@
 import React from 'react'
 import '@/assets/styles/globals.css'
 import Navbar from '@/components/Navbar'
+import AuthProvider from '@/components/AuthProvider'
 
 export const metadata = {
     title: 'Property Pulse | Find The Perfect Rental',
@@ -10,16 +11,18 @@ export const metadata = {
 
 const MainLayout = ({children}) => {
     return (
-        <html lang='en'>
-            <body>
-                
-                <Navbar/>
-                <main>  
-                    {children}
-                </main>
-            </body>
+        <AuthProvider>
+            <html lang='en'>
+                <body>
+                    <Navbar/>
+                    <main>  
+                        {children}
+                    </main>
+                </body>
 
-        </html>
+            </html>
+
+        </AuthProvider>
     )
 }
 
