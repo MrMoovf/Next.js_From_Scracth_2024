@@ -6,7 +6,6 @@ import { fetchProperties } from '@/utils/requests';
 const PropertiesPage = async () => {
 
 	const properties = await fetchProperties();
-	console.log(properties);
 
 	// Sorting the properties on date
 	properties.sort( (a, b) => new Date(b.createdAt) - new Date(a.createdAt));
