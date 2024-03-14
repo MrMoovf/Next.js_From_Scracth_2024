@@ -11,6 +11,7 @@ import {signIn, signOut, useSession, getProviders} from 'next-auth/react'
 const Navbar = () => {
 
 	const {data: session}= useSession();
+  const profileImage = session?.user?.image;
 
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -159,7 +160,7 @@ const Navbar = () => {
               </span>
             </Link>
             {/* <!-- Profile dropdown button --> */}
-            <div className='relative ml-3'>
+            <div  className='relative ml-3'>
               <div>
                 <button
                 onClick={() => {setIsProfileMenuOpen(prev => !prev)}}
@@ -173,7 +174,9 @@ const Navbar = () => {
                   <span className='sr-only'>Open user menu</span>
                   <Image
                     className='h-8 w-8 rounded-full'
-                    src={profileDefault}
+                    src={profileImage || profileDefault}
+                    width={40}
+                    height={40}
                     alt=''
                   />
                 </button>
@@ -190,6 +193,7 @@ const Navbar = () => {
                   tabIndex='-1'
                 >
                   <Link
+                    onClick={()=>{setIsProfileMenuOpen(false)}}
                     href='/profile'
                     className='block px-4 py-2 text-sm text-gray-700'
                     role='menuitem'
@@ -199,6 +203,7 @@ const Navbar = () => {
                     Your Profile
                   </Link>
                   <Link
+                    onClick={()=>{setIsProfileMenuOpen(false)}}
                     href='/properties/saved'
                     className='block px-4 py-2 text-sm text-gray-700'
                     role='menuitem'
@@ -208,6 +213,7 @@ const Navbar = () => {
                     Saved Properties
                   </Link>
                   <button
+                  onClick={()=>{signOut()}}
                     className='block px-4 py-2 text-sm text-gray-700'
                     role='menuitem'
                     tabIndex='-1'

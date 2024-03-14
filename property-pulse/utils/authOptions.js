@@ -18,15 +18,7 @@ export const authOptions = {
     ],
     callbacks: {
         // Invoked on successful sign in
-        async signin ({profile}){
-            console.log('This is the signin function');
-            console.log('This is the signin function');
-            console.log('This is the signin function');
-            console.log('This is the signin function');
-            console.log('This is the signin function');
-            console.log('This is the signin function');
-            console.log('This is the signin function');
-            console.log('This is the signin function');
+        async signIn ({profile}){
 
             // 1. Connect to DB
             await connectDB();
@@ -34,8 +26,6 @@ export const authOptions = {
 
             // 2. check if user that logged in exists
             const userExists = await User.findOne({email: profile.email});
-            console.log('This is user exists:');
-            console.log(userExists);
 
 
             // 3. If not, add user to db
@@ -54,15 +44,14 @@ export const authOptions = {
 
         },
         // Modifies the session object
-        async sessionss ({session}){
+        async session ({session}){
             // 1. Get user from DB
             await connectDB();
-            console.log('this is session user email');
-            console.log(session.user.email);
             const user = await User.findOne({email: session.user.email});
 
             // 2. Asign the user id to the session
             session.user.id = user._id.toString();
+            session.user.image = user.image;
 
 
             // 3. return that session
