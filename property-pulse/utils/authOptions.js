@@ -19,6 +19,15 @@ export const authOptions = {
     callbacks: {
         // Invoked on successful sign in
         async signin ({profile}){
+            console.log('This is the signin function');
+            console.log('This is the signin function');
+            console.log('This is the signin function');
+            console.log('This is the signin function');
+            console.log('This is the signin function');
+            console.log('This is the signin function');
+            console.log('This is the signin function');
+            console.log('This is the signin function');
+
             // 1. Connect to DB
             await connectDB();
 
@@ -41,7 +50,7 @@ export const authOptions = {
                 });
             }
             // 4. Return true to allow the sign in
-            return false;
+            return true;
 
         },
         // Modifies the session object
