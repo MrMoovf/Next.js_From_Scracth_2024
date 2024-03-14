@@ -54,7 +54,7 @@ export const authOptions = {
 
         },
         // Modifies the session object
-        async session ({session}){
+        async sessionss ({session}){
             // 1. Get user from DB
             await connectDB();
             console.log('this is session user email');
