@@ -25,10 +25,6 @@ const Navbar = () => {
 		setAuthProviders();
 	},[])
 
-	useEffect( () => {
-		console.log(providers);
-
-	},[providers])
 
 	
 

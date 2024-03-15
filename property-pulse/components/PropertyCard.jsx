@@ -5,6 +5,7 @@ import {FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarker} from 'react-ic
 
 const PropertyCard = ({property}) => {
     const {rates} = property;
+    const image = typeof property.images[0] == undefined ?  '' : property.images[0];
 
     const getRateDisplay = () => {
         if(rates.monthly){
@@ -20,7 +21,7 @@ const PropertyCard = ({property}) => {
   return (
     <div className="rounded-xl shadow-md relative">
             <Image
-              src={`/images/properties/${property.images[0]}`}
+              src={image ? image : '' }
               height={0}
               width={0}
               sizes='100vw'

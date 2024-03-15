@@ -1,5 +1,8 @@
+import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database"
 import Property from "@/models/Property";
+import { getSessionUser } from "@/utils/getSessionUser";
+
 
 
 // GET - /api/properties
@@ -20,6 +23,17 @@ export const GET = async (request) =>{
 // POST - /api/properties
 export const POST = async (request) => {
     try {
+        await connectDB();
+        
+        const sessionUser = await getSessionUser();
+
+        if(!sessionUser || !sessionUser.userId){
+            return new Response('Unauthorized - no session',401)
+
+        }
+
+        const {userId} = sessionUser;
+
 
         const formData = await request.formData();
 
@@ -51,19 +65,49 @@ export const POST = async (request) => {
                 phone: formData.get('seller_info.phone'),
 
             },
-            images
+            owner: userId,
         }
 
-        console.log(property);
+        // uploading images to Cloudinary
+        const imageUploadPromises = [];
+        
+        for(const image of images){
+            const imageBuffer = await image.arrayBuffer();
+            const imageArray = Array.from(new Uint8Array(imageBuffer));
+            const imageData = Buffer.from(imageArray);
+
+            // convert the image data to base64
+            const imageBase64 = imageData.toString('base64');
+
+            // make request to upload this info to cloudinary
+            const result = await cloudinary.uploader.upload(
+                `data:image/png;base64,${imageBase64}`,{
+                    folder: 'propertyPulse'
+                }
+            )
+            imageUploadPromises.push(result.secure_url);
 
 
+        }
 
-        // console.log(amenities);
-        // console.log(images);
+        // wait for all images to upload
+        const uploadedImages = await Promise.all(imageUploadPromises
+            );
+        property.images = uploadedImages;
 
-        return new Response(JSON.stringify({message:'Success'}), {status: 200})
+
+        // Upload finished model to DB
+        const newProperty = new Property(property);
+        await Property.create(newProperty);
+
+        console.log(newProperty);
+
+
+        // return new Response(JSON.stringify({property}), {status: 200})
+        return  Response.redirect(`${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`)
     } catch (error) {
-        return new Response(JSON.stringify({message:'Failed to add property'}), {status: 500})
+        console.log(error);
+        return new Response(JSON.stringify({message:'Failed to add property', error}), {status: 500})
         
     }
 }
