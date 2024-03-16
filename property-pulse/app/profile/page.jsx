@@ -1,13 +1,12 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
 import { useSession } from 'next-auth/react';
 import profileDefault from '@/assets/images/profile.png'
 import {fetchUsersProperties} from '@/utils/requests';
 import Spinner from '@/components/Spinner';
 import UserPropertyCard from '@/components/UserPropertyCard';
 import UserProfileSection from '@/components/UserProfileSection';
+import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
     const {data: session} = useSession();
@@ -37,14 +36,37 @@ const ProfilePage = () => {
         getData();
     },[session]);
 
-    useEffect(()=>{
-        console.log(properties);
-    },[properties])
+    // to delete!!
+    // useEffect(()=>{
+    //     const getFB = async()=>{
+    //         const res = await fetch('graph.facebook.com/v19.0/ByornGold/feed');
+    //         console.log(await res.json());
+    //     }
+    //     getFB()
+    // },[])
 
-    
-    useEffect(()=>{
-        console.log(loading);
-    },[loading])
+
+    const handlePropertyDelete = async (property_id)=>{
+        const confirmed = window.confirm('Are you sure you want to delete this property?');
+        try {
+            if(confirmed){
+                const res = await fetch(`/api/properties/${property_id}`,{method:'DELETE'});
+                if(res.ok){
+                    setProperties(properties.filter( property => property._id != property_id));
+                    toast.success('Property Deleted');
+                }
+                else{
+                    toast.error('Something went wrong deleting the property');
+                    return;
+                }
+            }
+        } catch (error) {
+            toast.error('Something went wrong deleting the property');
+            console.error(error);
+            return;
+        }
+
+    }
 
 
   return (
@@ -72,7 +94,7 @@ const ProfilePage = () => {
             {!loading && properties.length > 0 && (
                 <>
                     {properties.map( property => (
-                        <UserPropertyCard key={property._id} property={property} />
+                        <UserPropertyCard key={property._id} property={property} handlePropertyDelete={handlePropertyDelete} />
 
                     ))}
                 </>

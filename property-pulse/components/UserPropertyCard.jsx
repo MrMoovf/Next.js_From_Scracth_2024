@@ -2,11 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const UserPropertyCard = ({property}) => {
+const UserPropertyCard = ({property, handlePropertyDelete}) => {
+    const property_id = property._id;
 
-    const handlePropertyDelete = ()=>{
-        console.log(property._id);
-    }
 
     return (
         <div className="mb-10">
@@ -30,7 +28,7 @@ const UserPropertyCard = ({property}) => {
                     Edit
                 </Link>
                 <button
-                    onClick={()=>{handlePropertyDelete()}}
+                    onClick={()=>{handlePropertyDelete(property_id)}}
                     className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
                     type="button"
                 >

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "cloudinary": "^2.0.3"
+    "cloudinary": "^2.0.3",
+    "react-toastify": "^10.0.5"
   }
 }
