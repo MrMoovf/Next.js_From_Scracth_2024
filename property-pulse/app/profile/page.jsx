@@ -36,15 +36,6 @@ const ProfilePage = () => {
         getData();
     },[session]);
 
-    // to delete!!
-    // useEffect(()=>{
-    //     const getFB = async()=>{
-    //         const res = await fetch('graph.facebook.com/v19.0/ByornGold/feed');
-    //         console.log(await res.json());
-    //     }
-    //     getFB()
-    // },[])
-
 
     const handlePropertyDelete = async (property_id)=>{
         const confirmed = window.confirm('Are you sure you want to delete this property?');
