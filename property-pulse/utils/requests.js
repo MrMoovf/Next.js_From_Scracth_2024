@@ -43,6 +43,7 @@ const fetchUsersProperties = async (user_id) => {
 
 }
 
+// Fetch property by id
 const fetchProperty = async (id) => {
     try {
         if(!apiDomain){
@@ -63,4 +64,23 @@ const fetchProperty = async (id) => {
     }
 }
 
-export {fetchProperties, fetchProperty, fetchUsersProperties};
+// bookmark property in user model
+const bookmarkProperty = async (user_id, property_id) => {
+    try {
+        const res = await fetch(`/api/properties/user/${user_id}/${property_id}`, {method:'POST'});
+        if(!res.ok){
+            return null;
+        }
+        else{
+            return res;
+        }
+        
+
+
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export {fetchProperties, fetchProperty, fetchUsersProperties, bookmarkProperty};

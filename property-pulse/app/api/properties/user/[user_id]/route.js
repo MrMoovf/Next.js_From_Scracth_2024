@@ -20,6 +20,4 @@ export const GET = async (request, {params: {user_id}}) => {
     } catch (error) {
         return new Response('Error',{status:500})
     }
-
-
 }

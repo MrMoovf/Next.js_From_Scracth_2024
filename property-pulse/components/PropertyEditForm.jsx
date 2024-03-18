@@ -1,40 +1,78 @@
 'use client'
+import { fetchProperty } from '@/utils/requests';
 import { useState, useEffect } from 'react'
+import {toast} from 'react-toastify'
+import { useParams,  useRouter} from 'next/navigation';
 import React from 'react'
+import Spinner from './Spinner';
 
-const PropertyEditForm = () => {
+const PropertyEditForm = ({id}) => {
+    const router = useRouter();
     const [mounted, setMounted] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [fields, setFields] = useState({
-        "_id": "1",
-        "owner": "1",
-        "name": "Boston Commons Retreat",
-        "type": "Apartment",
+        "_id": "",
+        "owner": "",
+        "name": "",
+        "type": "",
         "description": "",
         "location": {
           "street": "",
-          "city": "Boston",
-          "state": "MA",
+          "city": "",
+          "state": "",
           "zipcode": ""
         },
         "beds": 2,
         "baths": 1,
-        "square_feet": 1500,
+        "square_feet": 1000,
         "amenities": [
           "Wifi",
         ],
         "rates": {
           "weekly": '',
-          "monthly": '2000',
+          "monthly": '',
           "nightly":''
         },
         "seller_info": {
-          "name": "John Doe",
-          "email": "john@gmail.com",
-          "phone": "617-555-5555"
+          "name": " ",
+          "email": "",
+          "phone": ""
         },
       });
 
     useEffect( ()=>{
+        const getPropertyData = async ( )=> {
+            try {
+                const property = await fetchProperty(id);
+
+                // check rates for null
+                // if so, then make the field to empty string
+                if(property && property.rates){
+                    for(const rate in property.rates){
+                        if(property.rates[rate] == null){
+                            property.rates[rate] = ''
+                        }
+                    }
+                }
+                
+                setFields(property)
+            } catch (error) {
+                console.error(error)
+                
+            }
+            finally{
+                setLoading(false);
+
+            }
+
+        }
+        getPropertyData();
+        setMounted(true);
+
+    },[])
+
+    useEffect(()=>{
+        console.log('this is fields')
         console.log(fields);
     },[fields])
 
@@ -82,17 +120,38 @@ const PropertyEditForm = () => {
     }
 
 
-    useEffect( () => {
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const formData = new FormData(e.target);
+            const res = await fetch(`/api/properties/${id}`,{method: 'PUT', body: formData});
 
-        setMounted(true);
+            if(res.ok){
+                router.push(`/properties/${id}`);
+            }
+            else if(res.status == 401 ||res.status == 403) {
+                toast.error('Permission denied');
+            }
+            else{
+                toast.error('Something went wrong');
+            }
 
-    },[])
+        } catch (error) {
+            toast.error('Something went wrong');
+            console.error(error);
+        }
 
-    const handleSubmit = async ()=>{}
+    }
 
         
-    return mounted && 
-        <form onSubmit={handleSubmit}> 
+    return (
+        <>
+            {loading && (
+                <Spinner loading={loading}/>
+            )}
+            {mounted && !loading && (
+                <form onSubmit={handleSubmit}> 
             <h2 className="text-3xl text-center font-semibold mb-6">
             Edit Property
             </h2>
@@ -536,7 +595,11 @@ const PropertyEditForm = () => {
                 Edit Property
             </button>
         </div>
-    </form>
+                </form>
+            )}
+            
+        </>
+    )
   
 }
 
