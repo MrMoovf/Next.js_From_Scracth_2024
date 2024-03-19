@@ -1,14 +1,19 @@
 'use client'
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react'
 import { FaPaperPlane } from 'react-icons/fa'
 import { toast } from 'react-toastify';
 
 const PropertyContactForm = ({property}) => {
+    const {data: session} = useSession();
+    const sessionUser = session?.user;
+    const sessionUserId = session?.user?.id;
+
     const [fields, setFields] = useState({
-        name: 'Anders',
-        email: 'anders@kozuch.dk',
-        phone: '12341234',
-        message: 'Hej den ser fed ud'
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
     });
     const [wasSubmitted, setWasSubmitted] = useState(false);
 
@@ -63,12 +68,12 @@ const PropertyContactForm = ({property}) => {
 
 
             // Resetting
-            // setFields({
-            //     name:'',
-            //     email:'',
-            //     phone:'',
-            //     message:'',
-            // });
+            setFields({
+                name:'',
+                email:'',
+                phone:'',
+                message:'',
+            });
         } catch (error) {
             console.log(error);
             toast.error('Woops, something went wrong')
@@ -77,7 +82,7 @@ const PropertyContactForm = ({property}) => {
         }
 
     }
-    return (
+    return sessionUser ? (
         <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-bold mb-6">Contact Property Manager</h3>
             {wasSubmitted && (
@@ -163,6 +168,9 @@ const PropertyContactForm = ({property}) => {
             )}
             
         </div>
+    )
+    : (
+        <div className='bg-blue-500 rounded-xl shadow-lg p-4 font-bold text-white'>Log in to send a message</div>
     )
 }
 

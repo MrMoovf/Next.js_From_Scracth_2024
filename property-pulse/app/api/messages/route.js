@@ -2,29 +2,16 @@ import connectDB from "@/config/database"
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 
+export const dynamic = 'force-dynamic';
+
 // /api/messages
 export const POST = async (request) => {
     try {
         await connectDB();
         const { name, email, phone, message, property, recipient } = await request.json();
-        // console.log(request.json());
-        // {
-        //     name: 'Anders',
-        //     email: 'anders@kozuch.dk',
-        //     phone: '12341234',
-        //     message: 'Hej den ser fed ud',
-        //     recipient: '123',
-        //     property: '345',
-        //     sender: 'asdsad'
-        // };
-
-        // console.log(request);
-
-        // return new Response(JSON.stringify({message:'its me'}), {status:500});
-
+    
 
         const sessionUser = await getSessionUser();
-
 
         if(!sessionUser || !sessionUser.user){
             return new Response(JSON.stringify({message:'Unauthorized'}), {status:401});
@@ -56,4 +43,32 @@ export const POST = async (request) => {
 
         
     }
+}
+
+
+// /api/messages
+export const GET = async (request) => {
+    try {
+        await connectDB();
+        const sessionUser = await getSessionUser();
+
+        if(!sessionUser || !sessionUser.user){
+            return new Response(JSON.stringify({message:'Unauthorized'}), {status:401});
+        }
+
+        const messages = await Message.find({recipient: sessionUser.userId}
+        // .populate('sender','username')
+        // .populate('property','name')
+        );
+
+        return new Response(JSON.stringify(messages),{status:200});
+
+
+    } catch (error) {
+        console.log(error)
+        return new Response(JSON.stringify({message: 'Error in the catch'}),{status:500});
+
+        
+    }
+
 }
