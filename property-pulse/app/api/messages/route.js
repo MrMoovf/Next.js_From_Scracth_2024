@@ -56,10 +56,11 @@ export const GET = async (request) => {
             return new Response(JSON.stringify({message:'Unauthorized'}), {status:401});
         }
 
-        const messages = await Message.find({recipient: sessionUser.userId}
-        // .populate('sender','username')
-        // .populate('property','name')
-        );
+        const messages = await Message.find({recipient: sessionUser.userId})
+        .sort({createdAt: -1}) // sort  read messages in asc order
+        .populate('sender','username')
+        .populate('property','name');
+        ;
 
         return new Response(JSON.stringify(messages),{status:200});
 

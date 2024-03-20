@@ -13,6 +13,7 @@ const Messages = () => {
                 const res = await fetch('/api/messages');
                 if(res.ok){
                     const data = await res.json();
+                    console.log(data);
                     setMessages(data);
 
                 }
@@ -48,7 +49,7 @@ const Messages = () => {
                         {messages.length == 0 ? 'No messages' 
                         : 
                         messages.map( message => {
-                            return (<Message key={message._id} message={message}/>)
+                            return (<Message key={message._id} message={message} messages={messages} setMessages={setMessages}/>)
                         })
                         }
                       

@@ -11,6 +11,7 @@ const Spinner = ({loading, size = 150, mx = '100px', color = '#3b82f6'}) => {
   return (
     <>
         <ClipLoader
+        className='mx-auto'
         color={color}
         loading={loading}
         cssOverride={override}
