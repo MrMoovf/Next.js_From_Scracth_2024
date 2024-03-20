@@ -6,6 +6,7 @@ import  {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from '@/components/Footer';
 import { GlobalProvider } from '@/context/GlobalContext';
+import 'photoswipe/dist/photoswipe.css';
 
 
 export const metadata = {

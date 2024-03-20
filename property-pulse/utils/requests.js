@@ -13,7 +13,8 @@ const fetchProperties = async () => {
 			throw new Error('Failed to fetch data');
 		}
 		let data = await res.json();
-		data = data.properties;
+        data = data.result;
+
 
 		return data;
 	} catch (error) {

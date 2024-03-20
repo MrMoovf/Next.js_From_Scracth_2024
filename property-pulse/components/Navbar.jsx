@@ -29,17 +29,6 @@ const Navbar = () => {
 
 
 	},[])
-
-  useEffect( ()=>{
-    console.log(notifications);
-    console.log('NOTIF')
-    console.log(setNotifications);
-
-  },[notifications])
-
-
-	
-
   const pathname = usePathname();
 
 
